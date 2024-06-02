@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "rp2040"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"*.v": "systemverilog",
+			"initializer_list": "cpp",
+			"type_traits": "cpp",
+			"vector": "cpp",
+			"xstring": "cpp",
+			"xutility": "cpp"
+		}
+	}
+}

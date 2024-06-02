@@ -1,0 +1,4 @@
+﻿#include "global.h"
+
+// nothing
+
