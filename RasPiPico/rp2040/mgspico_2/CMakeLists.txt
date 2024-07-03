@@ -1,40 +1,45 @@
 set(BinName "mgspico_2")
+set(Srcd "../mgspico")
+
+add_compile_definitions(MGS_MUSE_MACHINA)
 
 add_executable(
 	${BinName}
-	global.cpp
-	mgspico.cpp
-	timerobj.cpp
-	sdfat.cpp
-	MgsFiles.cpp
-	CUTimeCount.cpp
-	t_mgspico.cpp
-	ff/ff.c
-	ff/ffsystem.c
-	ff/ffunicode.c
-	ff/mmc_pico_spi.c
-	mgs/mgs_tools.cpp
-	oled/oledssd1306.cpp
-	HopStepZ/CHopStepZ.cpp
-	HopStepZ/CMsxIoSystem.cpp
-	HopStepZ/CMsxMemSlotSystem.cpp
-	HopStepZ/CMsxMusic.cpp
-	HopStepZ/CMsxVoidMemory.cpp
-	HopStepZ/CMsxDummyMain.cpp
-	HopStepZ/CPhysicalSlotDevice.cpp
-	HopStepZ/CRam64k.cpp
-	HopStepZ/CScc.cpp
-	HopStepZ/CZ80MsxDos.cpp
-	tgf/CTgfPlayer.cpp
-	CReadFileStream.cpp
-	t_si5351.cpp
+	${Srcd}/global.cpp
+	${Srcd}/mgspico.cpp
+	${Srcd}/timerobj.cpp
+	${Srcd}/sdfat.cpp
+	${Srcd}/MgsFiles.cpp
+	${Srcd}/CUTimeCount.cpp
+	${Srcd}/t_mgspico.cpp
+	${Srcd}/ff/ff.c
+	${Srcd}/ff/ffsystem.c
+	${Srcd}/ff/ffunicode.c
+	${Srcd}/ff/mmc_pico_spi.c
+	${Srcd}/mgs/mgs_tools.cpp
+	${Srcd}/oled/oledssd1306.cpp
+	${Srcd}/HopStepZ/CHopStepZ.cpp
+	${Srcd}/HopStepZ/CMsxIoSystem.cpp
+	${Srcd}/HopStepZ/CMsxMemSlotSystem.cpp
+	${Srcd}/HopStepZ/CMsxMusic.cpp
+	${Srcd}/HopStepZ/CMsxVoidMemory.cpp
+	${Srcd}/HopStepZ/CMsxDummyMain.cpp
+	${Srcd}/HopStepZ/CPhysicalSlotDevice.cpp
+	${Srcd}/HopStepZ/CRam64k.cpp
+	${Srcd}/HopStepZ/CScc.cpp
+	${Srcd}/HopStepZ/CZ80MsxDos.cpp
+	${Srcd}/tgf/CTgfPlayer.cpp
+	${Srcd}/CReadFileStream.cpp
+	${Srcd}/MgspicoSettings.cpp
+	${Srcd}/vgm/CVgmPlayer.cpp
+	${Srcd}/t_si5351.cpp
 	)
 
 include_directories(
-	ff
-	HopStepZ
-	HopStepZ/muse
-	HopStepZ/tools
+	${Srcd}/ff
+	${Srcd}/HopStepZ
+	${Srcd}/HopStepZ/muse
+	${Srcd}/HopStepZ/tools
 	)
 
 target_compile_options(
