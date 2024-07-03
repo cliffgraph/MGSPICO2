@@ -24,7 +24,7 @@ MGSPICO2と呼称していますが機能的にはMGSPICOと変わりありま�
 
 ## 操作方法
 - [MGSPICO](https://github.com/cliffgraph/MGSPICO)と同様です。
-- MGSPICOとは異なり、MGSPICO2ではA/Bスイッチが有りますがこれはB側に切り替えたまま使用してください。
+- ~~MGSPICOとは異なり、MGSPICO2ではA/Bスイッチが有りますがこれはB側に切り替えたまま使用してください。~~ A/Bスイッチ(MODEスイッチ）は修正履歴を参照してください。
 
 ## ガーバーデータと部品表と注意事項
 - MGSPICO2-xxx/ ディレクトリ内を参照のこと。はんだ付けの難度は高いです。
