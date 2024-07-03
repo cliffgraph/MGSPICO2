@@ -1,10 +1,10 @@
 # MGSPICO2 (MGS MUSE MACHINA)
-2024/06/02 harumakkin
+2024/07/03 harumakkin
 
 ![mgspico2-01](docs/pics/mgspico2.png)</br>**fig.1 MGSPICO2**
 
 ## これは何？
-OPLL、PSG、SCCの音源とRaspberryPi Picoを実装し、[MGSDRV](https://gigamix.jp/mgsdrv/)と[勤労五号(KINROU5.DRV)](https://sakuramail.net/fswold/music.html#muskin)を使用して、MGSとMuSICA楽曲データ再生し鑑賞できる個人製作のハードウェアです。
+OPLL、PSG、SCCの音源とRaspberryPi Picoを実装し、[MGSDRV](https://gigamix.jp/mgsdrv/)と[勤労五号(KINROU5.DRV)](https://sakuramail.net/fswold/music.html#muskin)を使用して、MGSとMuSICA楽曲データ再生し鑑賞できる個人製作のハードウェアです。VGMファイルも再生できます(圧縮形式の.vgzファイル二は対応していません）
 [MGSPICO](https://github.com/cliffgraph/MGSPICO)は、MSX用音源カートリッジを別途用意し使用していましたがMGSPICO2では音源部分もワンボード化したものです。
 MGSPICO2と呼称していますが機能的にはMGSPICOと変わりありません。"2"は過剰なので、MGS MUSE MACHINAは別称を持っています。
 この作品は多く廃版部品を使用しているので、製作はおすすめしません。
@@ -26,10 +26,12 @@ MGSPICO2と呼称していますが機能的にはMGSPICOと変わりありま�
 - [MGSPICO](https://github.com/cliffgraph/MGSPICO)と同様です。
 - MGSPICOとは異なり、MGSPICO2ではA/Bスイッチが有りますがこれはB側に切り替えたまま使用してください。
 
-## ガーバーデータと部品表
+## ガーバーデータと部品表と注意事項
 - MGSPICO2-xxx/ ディレクトリ内を参照のこと。はんだ付けの難度は高いです。
 - raspberry Pi Picoにインストールするファイルは、RasPiPico/dist/mgspico2.uf2 です
 - TangNanoに書き込むファイルは、RasPiPico/dist/mmmscc.fs です
+- MGSPICO2-02A基板のシルクには誤りがあります。VR1（PSGのボリューム）の近くのC15とR16のシルクの位置が逆でした。VR1に近い方がC15、遠い方がR16です。
+- MGSPICO2-02A基板背面のJP6からJP19の全14箇所のJPは、全てハンダでショートしてください。
 
 # LICENSEと利用に関する注意事項
 1. MGSPICOのファームウェアとそのソースコード、回路図データおよび資料ファイルは MIT License で配布されます。ただし、MGSPICO は、FatFsと8x16文字フォントを使用しています。FatFs/8x16文字フォントのソースコードの扱いに関しては各々のLICENSEに従ってください。
@@ -49,11 +51,12 @@ MGSPICO2と呼称していますが機能的にはMGSPICOと変わりありま�
 ## 修正履歴
 |date|MGSPICO2|firmware|note|
 |:--|:--|:--|:--|
+|2024/07/03|－|mgspico2.uf2(v1.10)|[MGSPICO](https://github.com/cliffgraph/MGSPICO) v1.10相当です<br>- MGSPICO と同様、●スイッチを押しながら電源を入れるとSETTINGモードになります<br>- MGSPICOと異なりMGSPICO2にはMODEスイッチがあります。このバージョンでは、MODEスイッチをB側にして電源をONするとSETTINGの状態に関係なく240MHzで動作するようになります。A側ではSETTINGで指定している速度で動作します|
 |2024/06/02|MGSPICO2-02A|mgspico2.uf2(v1.6)|初版、MGSPICO v1.5相当です|
 
 ## 余禄
 MGSPICO2 の機能に関係ないですが、開発中に見つけたものをメモ書きしておきます。
 ##### 特になし、、、
 ##### その他
-- MGSPICOのRaspberryPiPicoはCPUのクロックアップを行っていません。mgspico2.uf2ファームウェアは標準の125MHzのままで動作しています。
-- mgspico2.uf2ファームウェアはMGSPICOには使用できません。MGSPICO2のファームウェアもMGSPICOには使用できません。ただ、SDカードはそのまま使用できます。
+- ~~MGSPICOのRaspberryPiPicoはCPUのクロックアップを行っていません。mgspico2.uf2ファームウェアは標準の125MHzのままで動作しています。~~
+- mgspico2.uf2ファームウェアはMGSPICOには使用できません。MGSPICO2のファームウェアもMGSPICOには使用できません。ただし、SDカードはそのまま使用できます。
