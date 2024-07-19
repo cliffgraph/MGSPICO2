@@ -1,5 +1,5 @@
 # MGSPICO2 (MGS MUSE MACHINA)
-2024/07/03 harumakkin
+2024/07/19 harumakkin
 
 ![mgspico2-01](docs/pics/mgspico2.png)</br>**fig.1 MGSPICO2**
 
@@ -33,6 +33,7 @@ MGSPICO2と呼称していますが機能的にはMGSPICOと変わりありま�
 - MGSPICO2-02A基板のシルクには誤りがあります。VR1（PSGのボリューム）の近くのC15とR16のシルクの位置が逆でした。VR1に近い方がC15、遠い方がR16です。
 - MGSPICO2-02A基板背面のJP6からJP19の全14箇所のJPは、全てハンダでショートしてください。
 
+
 # LICENSEと利用に関する注意事項
 1. MGSPICOのファームウェアとそのソースコード、回路図データおよび資料ファイルは MIT License で配布されます。ただし、MGSPICO は、FatFsと8x16文字フォントを使用しています。FatFs/8x16文字フォントのソースコードの扱いに関しては各々のLICENSEに従ってください。
 2. 本作品は同人ハードウェア＆ソフトウェアです。本作品の設計およびソフトウェアは品質を保証していません。音源カートリッジや音響設備、その周辺機器が故障、破損したとしても自身で責任を負える方のみ本作品をご利用ください。特にハードウェアの製作を伴いますのでリスクがあります。製作の腕に自身のある方のみご利用ください。
@@ -51,6 +52,7 @@ MGSPICO2と呼称していますが機能的にはMGSPICOと変わりありま�
 ## 修正履歴
 |date|MGSPICO2|firmware|note|
 |:--|:--|:--|:--|
+|2024/07/19|－|mgspico2.uf2(v1.11)|SCC+を使用するVGM/TGFデータを再生しても鳴らない問題を修正しました。MGS、MuSICAはSCC+を使用していないのでMGS、MuSICAは変わりありません|
 |2024/07/03|－|mgspico2.uf2(v1.10)|[MGSPICO](https://github.com/cliffgraph/MGSPICO) v1.10相当です<br>- MGSPICO と同様、●スイッチを押しながら電源を入れるとSETTINGモードになります<br>- MGSPICOと異なりMGSPICO2にはMODEスイッチがあります。このバージョンでは、MODEスイッチをB側にして電源をONするとSETTINGの状態に関係なく240MHzで動作するようになります。A側ではSETTINGで指定している速度で動作します|
 |2024/06/02|MGSPICO2-02A|mgspico2.uf2(v1.6)|初版、MGSPICO v1.5相当です|
 
