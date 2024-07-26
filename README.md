@@ -1,5 +1,5 @@
 # MGSPICO2 (MGS MUSE MACHINA)
-2024/07/23 harumakkin
+2024/07/26 harumakkin
 
 ![mgspico2-01](docs/pics/mgspico2.png)</br>**fig.1 MGSPICO2**
 
@@ -27,12 +27,24 @@ MGSPICO2と呼称していますが機能的にはMGSPICOと変わりありま�
 - ~~MGSPICOとは異なり、MGSPICO2ではA/Bスイッチが有りますがこれはB側に切り替えたまま使用してください。~~ A/Bスイッチ(MODEスイッチ）は修正履歴を参照してください。
 
 ## ガーバーデータと部品表と注意事項
+TangNanoとTangNano1Kのどちらを使用するかで、内容が異なります。ご注意ください。
 - MGSPICO2-xxx/ ディレクトリ内を参照のこと。はんだ付けの難度は高いです。
-- raspberry Pi Picoにインストールするファイルは、RasPiPico/dist/mgspico2.uf2 です
-- TangNanoに書き込むファイルは、RasPiPico/dist/mmmscc.fs です
 - MGSPICO2-02A基板のシルクには誤りがあります。VR1（PSGのボリューム）の近くのC15とR16のシルクの位置が逆でした。VR1に近い方がC15、遠い方がR16です。
-- MGSPICO2-02A基板背面のJP6からJP19の全14箇所のJPは、全てハンダでショートしてください。
+- raspberry Pi Picoにインストールするファイルは、RasPiPico/dist/mgspico2.uf2 です
+#### TangNanoを使用する場合
+- TangNanoに書き込むファイルは、RasPiPico/dist/mmmscc.fs です
+- MGSPICO2-02A基板背面のJP6からJP19の全14箇所のJPは、全てハンダでショートしてください
+#### TangNano1Kを使用する場合
+- TangNano1Kを使用する場合は、RasPiPico/dist/mmmscc_tn1k.fs です
+- MGSPICO2-02A基板背面のJP6からJP13、JP15からJP19の計13箇所のJPを、全てハンダでショートしてください
+- JP14のみオープンのままにしてください。
+- TangNano1Kの6本のピンを除去してください（"for TangNano1k" in figure.1）
+- MGSPICO2-02A基板背面の導線を使用して一部ピンをつないでください。（"JumpWire" in figure.1）
+#### YMZ294-Dの代わりにYMZ284-Dを使用する
+- YMZ294-Dが入手できない場合、YMZ284-Dも使用できます。YMZ284-DはYMZ294-Dに比べ端子の数が2ピン少ないです。YMZ284-Dを実装るときは、１番ピン側（切り欠き側）に寄せて実装して下さい。
 
+**figure.1**
+![diagram-MGSPICO2-02A.png](MGSPICO2-xxx/diagram-MGSPICO2-02A.png)
 
 # LICENSEと利用に関する注意事項
 1. MGSPICOのファームウェアとそのソースコード、回路図データおよび資料ファイルは MIT License で配布されます。ただし、MGSPICO は、FatFsと8x16文字フォントを使用しています。FatFs/8x16文字フォントのソースコードの扱いに関しては各々のLICENSEに従ってください。
@@ -52,6 +64,7 @@ MGSPICO2と呼称していますが機能的にはMGSPICOと変わりありま�
 ## 修正履歴
 |date|MGSPICO2|firmware|note|
 |:--|:--|:--|:--|
+|2024/07/26|－|－|TangNnao1k用の"mmmscc_tn1k.fs"を公開しました。|
 |2024/07/23|－|mgspico2.uf2(v1.12)|・一部のVGMファイルはSCC音源チップのパラメータを初期化せず楽曲が始まるデータがあり、前に再生した曲データによって聴こえ方が変わってしまうことがありました。VGM(TGF)の再生前にSCC音源チップのすべてのパラメータを0クリアするようにしました<br>・MGSPICO2では、SCC音源の音がPSG音源とFM音源の音に比べすこし高音に聞こえてしまっていました。SCCへのクロック周波数を調整し、問題を解決しました。|
 |2024/07/19|－|mgspico2.uf2(v1.11)|SCC+を使用するVGM/TGFデータを再生しても鳴らない問題を修正しました。MGS、MuSICAはSCC+を使用していないのでMGS、MuSICAは変わりありません|
 |2024/07/03|－|mgspico2.uf2(v1.10)|[MGSPICO](https://github.com/cliffgraph/MGSPICO) v1.10相当です<br>- MGSPICO と同様、●スイッチを押しながら電源を入れるとSETTINGモードになります<br>- MGSPICOと異なりMGSPICO2にはMODEスイッチがあります。このバージョンでは、MODEスイッチをB側にして電源をONするとSETTINGの状態に関係なく240MHzで動作するようになります。A側ではSETTINGで指定している速度で動作します|
@@ -65,6 +78,6 @@ MGSPICO2 の機能に関係ないですが、開発中に見つけたものを�
 - mgspico2.uf2ファームウェアはMGSPICOには使用できません。MGSPICO2のファームウェアもMGSPICOには使用できません。ただし、SDカードはそのまま使用できます。
 
 ## 謝辞
-- mgspico2.uf2(v1.12)で解決しました、VGMファイルの曲データによって聴こえ方が変わってしまうことと、SCC音源の音がすこし高音に鳴ってしまう問題は、[kashiwaさん(@kashiwa)](https://twitter.com/kashiwa)に発見していただき、解決先も調査いただきました。ありがとうございます！
+- mgspico2.uf2(v1.12)で解決しました、VGMファイルの曲データによって聴こえ方が変わってしまうことと、SCC音源の音がすこし高音に鳴ってしまう問題は、[kashiwaさん(@kashiwa)](https://twitter.com/kashiwa)に発見していただき、解決先も調査いただきました。さらに、figure.1(diagram-MGSPICO2-02A.png)を作図し提供していただきました。ありがとうございます！
 
 
