@@ -1,5 +1,5 @@
 # MGSPICO2 (MGS MUSE MACHINA)
-2024/07/26 harumakkin
+2024/09/01 harumakkin
 
 ![mgspico2-01](docs/pics/mgspico2.png)</br>**fig.1 MGSPICO2**
 
@@ -64,11 +64,12 @@ TangNanoとTangNano1Kのどちらを使用するかで、内容が異なりま�
 ## 修正履歴
 |date|MGSPICO2|firmware|note|
 |:--|:--|:--|:--|
+|2024/09/01|－|mgspico_2.uf2(v1.13)|スイッチ入力の反応が悪くなることがあるので、チャタリング対策を変更して改善した|
 |2024/07/26|－|－|TangNnao1k用の"mmmscc_tn1k.fs"を公開しました。|
-|2024/07/23|－|mgspico2.uf2(v1.12)|・一部のVGMファイルはSCC音源チップのパラメータを初期化せず楽曲が始まるデータがあり、前に再生した曲データによって聴こえ方が変わってしまうことがありました。VGM(TGF)の再生前にSCC音源チップのすべてのパラメータを0クリアするようにしました<br>・MGSPICO2では、SCC音源の音がPSG音源とFM音源の音に比べすこし高音に聞こえてしまっていました。SCCへのクロック周波数を調整し、問題を解決しました。|
-|2024/07/19|－|mgspico2.uf2(v1.11)|SCC+を使用するVGM/TGFデータを再生しても鳴らない問題を修正しました。MGS、MuSICAはSCC+を使用していないのでMGS、MuSICAは変わりありません|
-|2024/07/03|－|mgspico2.uf2(v1.10)|[MGSPICO](https://github.com/cliffgraph/MGSPICO) v1.10相当です<br>- MGSPICO と同様、●スイッチを押しながら電源を入れるとSETTINGモードになります<br>- MGSPICOと異なりMGSPICO2にはMODEスイッチがあります。このバージョンでは、MODEスイッチをB側にして電源をONするとSETTINGの状態に関係なく240MHzで動作するようになります。A側ではSETTINGで指定している速度で動作します|
-|2024/06/02|MGSPICO2-02A|mgspico2.uf2(v1.6)|初版、MGSPICO v1.5相当です|
+|2024/07/23|－|mgspico_2.uf2(v1.12)|・一部のVGMファイルはSCC音源チップのパラメータを初期化せず楽曲が始まるデータがあり、前に再生した曲データによって聴こえ方が変わってしまうことがありました。VGM(TGF)の再生前にSCC音源チップのすべてのパラメータを0クリアするようにしました<br>・MGSPICO2では、SCC音源の音がPSG音源とFM音源の音に比べすこし高音に聞こえてしまっていました。SCCへのクロック周波数を調整し、問題を解決しました。|
+|2024/07/19|－|mgspico_2.uf2(v1.11)|SCC+を使用するVGM/TGFデータを再生しても鳴らない問題を修正しました。MGS、MuSICAはSCC+を使用していないのでMGS、MuSICAは変わりありません|
+|2024/07/03|－|mgspico_2.uf2(v1.10)|[MGSPICO](https://github.com/cliffgraph/MGSPICO) v1.10相当です<br>- MGSPICO と同様、●スイッチを押しながら電源を入れるとSETTINGモードになります<br>- MGSPICOと異なりMGSPICO2にはMODEスイッチがあります。このバージョンでは、MODEスイッチをB側にして電源をONするとSETTINGの状態に関係なく240MHzで動作するようになります。A側ではSETTINGで指定している速度で動作します|
+|2024/06/02|MGSPICO2-02A|mgspico_2.uf2(v1.6)|初版、MGSPICO v1.5相当です|
 
 ## 余禄
 MGSPICO2 の機能に関係ないですが、開発中に見つけたものをメモ書きしておきます。
