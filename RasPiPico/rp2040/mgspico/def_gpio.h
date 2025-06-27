@@ -6,6 +6,9 @@
 
 #pragma once
 
+
+#define MGS_MUSE_MACHINA_REPAIR_2024_08_05
+
 #include "hardware/spi.h"
 
 // SPI
@@ -15,7 +18,7 @@
 #define MMC_SPI_SCK_PIN 	18		// GP18 spi0 SCK pin.24
 #define MMC_SPI_CSN_PIN 	17		// GP17 spi0 CSn pin.22
 
-#ifdef MGS_MUSE_MACHINA
+#ifdef MGSPICO_2ND
 const uint32_t MMM_D0		= 2;
 const uint32_t MMM_D1		= 3;
 const uint32_t MMM_D2		= 4;
@@ -26,13 +29,25 @@ const uint32_t MMM_D6		= 8;
 const uint32_t MMM_D7		= 9;
 const uint32_t MMM_AEX1		= 11;
 const uint32_t MMM_ADDT_SCC	= 12;
-const uint32_t MMM_CSWR_PSG	= 13;
+	#ifdef MGS_MUSE_MACHINA_REPAIR_2024_08_05
+	const uint32_t MMM_CSWR_PSG	= 10;
+	#else
+	const uint32_t MMM_CSWR_PSG	= 13;
+	#endif
 const uint32_t MMM_CSWR_FM	= 14;
 const uint32_t MMM_CSWR_SCC	= 15;
 const uint32_t MMM_S_RESET	= 20;	// RESET
 const uint32_t MMM_AEX0		= 21;	// A0
 const uint32_t MMM_MODESW	= 22;	// 
-#else
+#elif defined(MGSPICO_3RD)
+#define SPIMUSE spi1
+#define MMC_SPIMUSE_TX_PIN  	11		// GP11 spi1 TX
+#define MMC_SPIMUSE_RX_PIN  	8		// GP8 	spi1 RX
+#define MMC_SPIMUSE_SCK_PIN 	10		// GP10 spi1 SCK
+#define MMC_SPIMUSE_CSN_PIN 	9		// GP9 	spi1 CSn
+const uint32_t MMM_EN_PWR3V3	= 15;	// PWR3V3
+const uint32_t MMM_S_RESET		= 20;	// RESET
+#elif defined(MGSPICO_1ST)
 const uint32_t MSX_A0_D0		= 0;
 const uint32_t MSX_A1_D1		= 1;
 const uint32_t MSX_A2_D2		= 2;

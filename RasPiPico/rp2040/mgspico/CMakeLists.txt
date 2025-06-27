@@ -1,5 +1,7 @@
 set(BinName "mgspico")
 
+add_compile_definitions(MGSPICO_1ST)
+
 add_executable(
 	${BinName}
 	global.cpp
@@ -9,6 +11,7 @@ add_executable(
 	MgsFiles.cpp
 	CUTimeCount.cpp
 	t_mgspico.cpp
+	t_mmmspi.cpp
 	ff/ff.c
 	ff/ffsystem.c
 	ff/ffunicode.c
@@ -29,6 +32,7 @@ add_executable(
 	CReadFileStream.cpp
 	MgspicoSettings.cpp
 	vgm/CVgmPlayer.cpp
+	../playlib/playlib.cpp
 	)
 
 include_directories(
@@ -36,6 +40,7 @@ include_directories(
 	HopStepZ
 	HopStepZ/muse
 	HopStepZ/tools
+	../playlib
 	)
 
 target_compile_options(
@@ -55,6 +60,7 @@ target_link_libraries(
 	${BinName}
 	PRIVATE
 	pico_stdlib
+	playlib
 #	hardware_pio
 	 hardware_spi hardware_i2c pico_multicore hardware_flash)
 

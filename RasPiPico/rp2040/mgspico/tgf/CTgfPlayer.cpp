@@ -1,4 +1,6 @@
 ﻿#include "../stdafx.h"
+#include <stdio.h>
+#include <memory.h>
 #include <string.h>
 #include "CTgfPlayer.h"
 #include "../t_mgspico.h"
@@ -89,6 +91,9 @@ void CTgfPlayer::PlayLoop()
 			break;
 		case tgf::M_TC:
 		{
+#ifdef MGSPICO_3RD
+			 mgspico::t_OutVSYNC(0);
+#endif
 			auto base = static_cast<tgf::timecode_t>((atom.data1<<16)|atom.data2);
 			if( m_bFirst ){
 				// 最初のtcは初期値として取り込む
@@ -125,13 +130,14 @@ void CTgfPlayer::Mute()
 	mgspico::t_MuteOPLL();
 	mgspico::t_MutePSG();
 	mgspico::t_MuteSCC();
+	mgspico::t_OutVSYNC(0);
 	return;
 }
 
 bool CTgfPlayer::EnableFMPAC()
 {
 	bool bRec = false;
-#if !defined(MGS_MUSE_MACHINA)
+#if defined(MGSPICO_1ST)
 	static const char *pMark = "OPLL";
 	static const int LEN_MARK = 8;
 	char sample[LEN_MARK+1] = "\0\0\0\0\0\0\0\0";	// '\0' x LEN_MARK
@@ -139,6 +145,7 @@ bool CTgfPlayer::EnableFMPAC()
 		sample[cnt] = (char)mgspico::t_ReadMem(0x4018 + cnt);
 	}
 	if( memcmp(sample+4, pMark, LEN_MARK-4) == 0) {
+		printf("found OPLL: %s\n", sample);
 		uint8_t v = mgspico::t_ReadMem(0x7ff6);
 		mgspico::t_WriteMem(0x7ff6, v|0x01);
 		bRec = true;;
@@ -148,6 +155,17 @@ bool CTgfPlayer::EnableFMPAC()
 	mgspico::t_OutSCC(0xBFFE, 0x00);
 	mgspico::t_OutSCC(0x9000, 0x3F);
 	return bRec;
+}
+
+bool CTgfPlayer::EnableYAMANOOTO()
+{
+#if defined(MGSPICO_1ST)
+	// For Yamanooto cartridge, enable PSG echo on standard ports #A0-#A3
+	mgspico::t_WriteMem(0x7fff, mgspico::t_ReadMem(0x7fff) | 0x01);
+	mgspico::t_WriteMem(0x7ffd, mgspico::t_ReadMem(0x7ffd) | 0x02);
+	mgspico::t_WriteMem(0x7fff, mgspico::t_ReadMem(0x7fff) & 0xee);
+#endif
+	return true;
 }
 
 

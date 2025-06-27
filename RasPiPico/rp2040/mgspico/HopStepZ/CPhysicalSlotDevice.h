@@ -14,10 +14,11 @@ private:
 
 	// for Carnivore2
 	z80ioaddr_t m_portCarnivore2;
-#ifdef MGS_MUSE_MACHINA
+#if defined(MGSPICO_2ND) || defined(MGSPICO_3RD)
 	static const z80memaddr_t ADDR_START = 0x9800;
 	static const z80memaddr_t ADDR_END = 0x98FF;
-#else
+	uint16_t	m_RedSccRam[0x100];
+#elif defined(MGSPICO_1ST)
 	static const z80memaddr_t ADDR_START = 0x9800;
 	static const z80memaddr_t ADDR_END = 0x987F;
 #endif
@@ -29,6 +30,7 @@ private:
 	bool enableCARNIVORE2();
 	bool enableYAMANOOTO();
 	bool enableFMPAC();
+	bool checkExtSlot(uint8_t *pFlag);
 
 private:
 	bool writeMemMGS(const z80memaddr_t addr, const uint8_t b);
@@ -44,6 +46,7 @@ public:
 	void SetSlotToPage(const msxpageno_t pageNo, const msxslotno_t slotNo);
 	msxslotno_t GetSlotByPage(const msxpageno_t pageNo);
 	bool WriteMem(const z80memaddr_t addr, const uint8_t b);
+	void WriteMemScc(const z80memaddr_t addr, const uint8_t b);
 	uint8_t ReadMem(const z80memaddr_t addr) const;
 
 /*IZ80IoDevice*/

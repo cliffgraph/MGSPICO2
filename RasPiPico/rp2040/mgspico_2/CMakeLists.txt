@@ -1,7 +1,7 @@
 set(BinName "mgspico_2")
 set(Srcd "../mgspico")
 
-add_compile_definitions(MGS_MUSE_MACHINA)
+add_compile_definitions(MGSPICO_2ND)
 
 add_executable(
 	${BinName}
@@ -33,13 +33,16 @@ add_executable(
 	${Srcd}/MgspicoSettings.cpp
 	${Srcd}/vgm/CVgmPlayer.cpp
 	${Srcd}/t_si5351.cpp
+	${Srcd}/../playlib/playlib.cpp
 	)
+
 
 include_directories(
 	${Srcd}/ff
 	${Srcd}/HopStepZ
 	${Srcd}/HopStepZ/muse
 	${Srcd}/HopStepZ/tools
+	${Srcd}/../playlib
 	)
 
 target_compile_options(
@@ -59,6 +62,7 @@ target_link_libraries(
 	${BinName}
 	PRIVATE
 	pico_stdlib
+	playlib
 #	hardware_pio
 	 hardware_spi hardware_i2c pico_multicore hardware_flash)
 

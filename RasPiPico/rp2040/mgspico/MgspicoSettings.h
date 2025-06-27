@@ -9,11 +9,18 @@ public:
 	{
 		const char *pName;
 		const int num;
-		const char *pChoices[4];
+		const char *pChoices[5];
 	};
+#if defined(MGSPICO_3RD) 
 	const static int NUM_MENUITEMS = 5;
+#elif defined(MGSPICO_2ND)
+	const static int NUM_MENUITEMS = 4;
+#elif defined(MGSPICO_1ST)
+	const static int NUM_MENUITEMS = 6;
+#endif
 	enum class RP2040CLOCK : uint8_t {CLK125MHZ, CLK240MHZ};
-	enum class MUSICDATA : uint8_t	{MGS=0, KIN5=1, TGF=2, VGM=3};
+	enum class MUSICDATA : uint8_t	{MGS=0, KIN5=1, TGF=2, VGM=3, NDP=4};
+	enum class SCCMODULE : uint8_t {IKASCC=0, HRASCC=1};
 
 private:
 #pragma pack(push,1)
@@ -23,7 +30,9 @@ private:
 		uint8_t		AutoRun;			// != 0 : 自動的に演奏を開始する
 		uint8_t		ShufflePlay;		// != 0 : ランダムの曲順で再生する
 		uint8_t		EnforceOPLL;		// != 0 : OPLLの存在模倣する
-		uint8_t		Padding[123];		// (構造体サイズを128byteに保つこと)
+		SCCMODULE	SccModule;			// IKASCC, HRASCC
+		uint8_t		YamanootoExtSlot;	// YAMANOOTO のいる拡張スロット番号
+		uint8_t		Padding[121];		// (構造体サイズを128byteに保つこと)
 	};
 #pragma pack(pop)
 
@@ -61,4 +70,11 @@ public:
 
 	bool GetEnforceOPLL() const;
 	void SetEnforceOPLL(const bool bEnforce);
+
+	SCCMODULE GetSccModule() const;
+	void SetSccModule(const SCCMODULE mod);
+
+	int GetYamanootoExtSlot() const;
+	void SetYamanootoExtSlot(const int slotNo);
+
 };

@@ -1,12 +1,13 @@
 # MGSPICO2 (MGS MUSE MACHINA)
-2024/09/01 harumakkin
+2025/06/28 harumakkin
 
 ![mgspico2-01](docs/pics/mgspico2.png)</br>**fig.1 MGSPICO2**
 
 ## これは何？
 OPLL、PSG、SCCの音源とRaspberryPi Picoを実装し、[MGSDRV](https://gigamix.jp/mgsdrv/)と[勤労五号(KINROU5.DRV)](https://sakuramail.net/fswold/music.html#muskin)を使用して、MGSとMuSICA楽曲データ再生し鑑賞できる個人製作のハードウェアです。VGMファイルも再生できます(圧縮形式の.vgzファイル二は対応していません）
+さらに、ファームウェアver1.14から、[NDP - PSG Driver for MSX](https://ndp.squares.net/web/)も使用できるようになりNDP楽曲データも再生できるようになりました。
 [MGSPICO](https://github.com/cliffgraph/MGSPICO)は、MSX用音源カートリッジを別途用意し使用していましたがMGSPICO2では音源部分もワンボード化したものです。
-MGSPICO2と呼称していますが機能的にはMGSPICOと変わりありません。"2"は過剰なので、MGS MUSE MACHINAは別称を持っています。
+MGSPICO2と呼称していますが機能的にはMGSPICOと変わりありません。"2"は過剰かなと思いまして、MGS MUSE MACHINAは別称を持っています。
 この作品は多く廃版部品を使用しているので、製作はおすすめしません。
 
 ## 使い方
@@ -16,6 +17,8 @@ MGSPICO2と呼称していますが機能的にはMGSPICOと変わりありま�
 - MGS楽曲データファイル（.MGSファイル）
 - [KINROU5.DRV(Ver2.00)](https://sakuramail.net/fswold/music.html#muskin)
 - MuSICA楽曲データファイル（.BGMファイル）
+- [NDP.BIN(Ver1.03)](https://ndp.squares.net/web/)
+- NDP楽曲データファイル（.NDPファイル）
 - microSD カード
 - DC5V電源(センタープラス 2.1mm DCプラグ）
 
@@ -60,10 +63,13 @@ TangNanoとTangNano1Kのどちらを使用するかで、内容が異なりま�
 - MGSDRV (C) Ain./Gigamix https://gigamix.jp/mgsdrv/
 - 勤労５号（MuSICA互換ドライバ）
 (C) 1996,1997 Keiichi Kuroda / BTO(MuSICA Laboratory) All rights reserved. https://sakuramail.net/fswold/music.html#muskin
+- NDP (PSG Driver for MSX)
+Programmed by naruto2413 https://ndp.squares.net/web/
 
 ## 修正履歴
 |date|MGSPICO2|firmware|note|
 |:--|:--|:--|:--|
+|2025/05/25|－|mgspic_2.uf2(v1.14)|NDP音源ドライバに対応しました。NDP楽曲データファイルは.NDP拡張子をつけてください<br> players.com、playersk.com は必要なくなりました。SDカードから players.com、playersk.com を削除してかまいません|
 |2024/09/01|－|mgspico_2.uf2(v1.13)|スイッチ入力の反応が悪くなることがあるので、チャタリング対策を変更して改善した|
 |2024/07/26|－|－|TangNnao1k用の"mmmscc_tn1k.fs"を公開しました。|
 |2024/07/23|－|mgspico_2.uf2(v1.12)|・一部のVGMファイルはSCC音源チップのパラメータを初期化せず楽曲が始まるデータがあり、前に再生した曲データによって聴こえ方が変わってしまうことがありました。VGM(TGF)の再生前にSCC音源チップのすべてのパラメータを0クリアするようにしました<br>・MGSPICO2では、SCC音源の音がPSG音源とFM音源の音に比べすこし高音に聞こえてしまっていました。SCCへのクロック周波数を調整し、問題を解決しました。|

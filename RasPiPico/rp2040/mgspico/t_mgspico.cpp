@@ -1,4 +1,8 @@
+#include "stdafx.h"
+#include <stdio.h>
 #include "t_mgspico.h"
+#include "t_mmmspi.h"
+
 
 namespace mgspico
 {
@@ -36,7 +40,7 @@ inline void t_wait100ns()
 
 RAM_FUNC bool t_WriteMem(const z80memaddr_t addr, const uint8_t b)
 {
-#if !defined(MGS_MUSE_MACHINA)
+#ifdef MGSPICO_1ST
 	// 	・アドレスバス0-15(GPIO_0-15) <= メモリアドレス
 	gpio_put(MSX_LATCH_A, 1);
 	for(int t = 0; t < 16; ++t) {
@@ -84,7 +88,7 @@ RAM_FUNC bool t_WriteMem(const z80memaddr_t addr, const uint8_t b)
 
 RAM_FUNC uint8_t t_ReadMem(const z80memaddr_t addr)
 {
-#if !defined(MGS_MUSE_MACHINA)
+#ifdef MGSPICO_1ST
 	// 	・アドレスバス0-15(GPIO_0-15) <= メモリアドレス
 	gpio_put(MSX_LATCH_A,	 1);
 	for(int t = 0; t < 16; ++t) {
@@ -120,7 +124,6 @@ RAM_FUNC uint8_t t_ReadMem(const z80memaddr_t addr)
 	gpio_put(MSX_A12_SLTSL,	 0);
 	gpio_put(MSX_A13_C1,	 c1);
 	gpio_put(MSX_A14_C12,	 c12);
-	gpio_put(MSX_A15_RESET,	 1);
 	// 	・ウェイト 1us
 	busy_wait_us(3);
 	// t_wait1us();
@@ -161,7 +164,7 @@ RAM_FUNC uint8_t t_ReadMem(const z80memaddr_t addr)
 
 RAM_FUNC bool t_OutPort(const z80ioaddr_t addr, const uint8_t b)
 {
-#ifdef MGS_MUSE_MACHINA
+#if defined(MGSPICO_2ND)	// MGS,MuSICA
 	switch(addr)
 	{
 		// OPLL
@@ -210,7 +213,30 @@ RAM_FUNC bool t_OutPort(const z80ioaddr_t addr, const uint8_t b)
 		default:
 			break;
 	}
-#else
+#elif defined(MGSPICO_3RD)
+	static uint8_t opll_addr;
+	static uint8_t psg_addr;
+	switch(addr)
+	{
+		// OPLL
+		case 0x7C:
+			opll_addr = b;
+			break;
+		case 0x7D:
+			mmmspi::PushBuff(mmmspi::CMD::OPLL, opll_addr, b);
+			break;
+
+		// PSG
+		case 0xA0:
+			psg_addr = b;
+			break;
+		case 0xA1:
+			mmmspi::PushBuff(mmmspi::CMD::PSG, psg_addr, b);
+			break;
+		default:
+			break;
+	}
+#elif defined(MGSPICO_1ST)
 	// 	・アドレスバス0-7(GPIO_0-7) <= ポート番号
 	// 	・アドレスバス8-15(GPIO_8-15)  <= 0x00
 	for(int t = 0; t < 8; ++t) {
@@ -266,7 +292,7 @@ RAM_FUNC bool t_OutPort(const z80ioaddr_t addr, const uint8_t b)
 
 RAM_FUNC bool t_InPort(uint8_t *pB, const z80ioaddr_t addr)
 {
-#if !defined(MGS_MUSE_MACHINA)
+#if defined(MGSPICO_1ST)
 	// 	・アドレスバス0-7(GPIO_0-7) <= ポート番号
 	// 	・アドレスバス8-15(GPIO_8-15)  <= (不定価)
 	for(int t = 0; t < 8; ++t) {
@@ -331,7 +357,7 @@ RAM_FUNC bool t_InPort(uint8_t *pB, const z80ioaddr_t addr)
 
 RAM_FUNC void t_OutOPLL(const uint16_t addr, const uint16_t data)
 {
-#ifdef MGS_MUSE_MACHINA
+#ifdef MGSPICO_2ND
 	gpio_put(MMM_AEX0, 0);
 	for(int t = 0; t < 8; ++t) {
 		gpio_put(MMM_D0 +t, (addr>>t)&0x01);
@@ -349,7 +375,9 @@ RAM_FUNC void t_OutOPLL(const uint16_t addr, const uint16_t data)
 	busy_wait_us(1);
 	gpio_put(MMM_CSWR_FM, 1);
 	busy_wait_us(84);
-#else
+#elif defined(MGSPICO_3RD)
+	mmmspi::PushBuff(mmmspi::CMD::OPLL, addr, data);
+#elif defined(MGSPICO_1ST)
 	mgspico::t_OutPort(0x7C, (uint8_t)addr);
 	busy_wait_us(4);
 	mgspico::t_OutPort(0x7D, (uint8_t)data);
@@ -360,7 +388,7 @@ RAM_FUNC void t_OutOPLL(const uint16_t addr, const uint16_t data)
 
 RAM_FUNC void t_OutPSG(const uint16_t addr, const uint16_t data)
 {
-#ifdef MGS_MUSE_MACHINA
+#ifdef MGSPICO_2ND
 	gpio_put(MMM_AEX0, 0);
 	for(int t = 0; t < 8; ++t) {
 		gpio_put(MMM_D0 +t, (addr>>t)&0x01);
@@ -379,10 +407,13 @@ RAM_FUNC void t_OutPSG(const uint16_t addr, const uint16_t data)
 	gpio_put(MMM_CSWR_PSG, 1);
 	busy_wait_us(1);
 
-#else
+#elif defined(MGSPICO_3RD)
+	mmmspi::PushBuff(mmmspi::CMD::PSG, addr, data);
+#elif defined(MGSPICO_1ST)
 	mgspico::t_OutPort(0xA0, (uint8_t)addr);
 	busy_wait_us(1);
 	mgspico::t_OutPort(0xA1, (uint8_t)data);
+	busy_wait_us(1);
 #endif
 	return;
 }
@@ -390,7 +421,7 @@ RAM_FUNC void t_OutPSG(const uint16_t addr, const uint16_t data)
 #include <stdio.h>
 RAM_FUNC void t_OutSCC(const z80memaddr_t addrOrg, const uint16_t data)
 {
-#ifdef MGS_MUSE_MACHINA
+#ifdef MGSPICO_2ND
 	const uint32_t seg = addrOrg & 0xff00;
 	gpio_put(MMM_ADDT_SCC, 1);	// ADDRESS
 	uint32_t addr = 0x0000;
@@ -415,8 +446,37 @@ RAM_FUNC void t_OutSCC(const z80memaddr_t addrOrg, const uint16_t data)
 	busy_wait_us(1);
 	gpio_put(MMM_CSWR_SCC, 1);
 	busy_wait_us(1);
-#else
-	mgspico::t_WriteMem(addrOrg, data);
+#elif defined(MGSPICO_3RD)
+	uint32_t addr = addrOrg & 0x00ff;
+	switch(addrOrg & 0xff00)
+	{
+		case 0x9000: addr |= 0x0000; break;
+		case 0x9800: addr |= 0x0100; break;
+		case 0xb800: addr |= 0x0200; break;
+		case 0xbf00: addr |= 0x0300; break;
+		case 0xb000: addr |= 0x0400; break;
+	}
+	mmmspi::PushBuff(mmmspi::CMD::SCC, addr, data);
+#elif defined(MGSPICO_1ST)
+	mgspico::t_WriteMem(addrOrg, (uint8_t)data);
+#endif
+	return;
+}
+
+RAM_FUNC void t_OutVSYNC(const uint32_t cnt)
+{
+#ifdef MGSPICO_3RD
+	mmmspi::PushBuff(mmmspi::CMD::VSYNC, 0x00, 0x00);
+	mmmspi::Present();
+#endif
+	return;
+}
+
+RAM_FUNC void t_OutSelSccMod(const uint32_t mod)
+{
+#ifdef MGSPICO_3RD
+	mmmspi::PushBuff(mmmspi::CMD::SEL_SCC_MODULE, 0x00, mod);
+	mmmspi::Present();
 #endif
 	return;
 }
